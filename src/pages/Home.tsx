@@ -5,6 +5,7 @@ import Features from '../section/Feature'
 import About from '../section/About'
 import Contact from '../section/Contact'
 import Footer from '../section/Footer'
+import Process from '../section/Process'
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
       <Hero />
       <Services />
       <Features />
+      <Process />
       <About />
       <Contact />
       <Footer />

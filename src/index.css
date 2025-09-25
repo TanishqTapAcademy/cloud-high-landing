@@ -10,3 +10,13 @@ body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
+
+/* Hide scrollbars globally but keep scrolling enabled */
+html, body {
+  -ms-overflow-style: none; /* IE and old Edge */
+  scrollbar-width: none; /* Firefox */
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, new Edge */
+}
