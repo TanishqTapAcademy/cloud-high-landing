@@ -61,7 +61,7 @@ const Contact = () => {
     {
       icon: Mail,
       title: 'Email Us',
-      details: 'hello@cloud-high.com',
+      details: 'sales@cloud-high.com',
       description: 'Get a response within 2 hours',
       gradient: 'from-cyan-400 to-blue-500',
       glowFrom: 'from-blue-500/5',
@@ -79,7 +79,7 @@ const Contact = () => {
     {
       icon: Phone,
       title: 'Call Us',
-      details: '+1 (555) CLOUD-99',
+      details: '+91 9945502004',
       description: 'Talk to our cloud experts',
       gradient: 'from-indigo-500 to-purple-500',
       glowFrom: 'from-purple-500/5',
