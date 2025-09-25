@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type RefObject, type ComponentType } from 'react';
-import { Users, Award, Target, Heart, Sparkles, Zap, Globe2, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Users, Award, Target, Heart, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 
 type ValueItem = {
   icon: ComponentType<{ className?: string }>,
@@ -276,12 +276,6 @@ const About = () => {
     }
   ];
 
-  const stats = [
-    { number: '100K+', label: 'Happy Customers', icon: Users, color: 'from-cyan-400 to-blue-500' },
-    { number: '99.99%', label: 'Uptime SLA', icon: Zap, color: 'from-green-400 to-emerald-500' },
-    { number: '50+', label: 'Countries Served', icon: Globe2, color: 'from-blue-500 to-indigo-500' },
-    { number: '2020', label: 'Founded', icon: Calendar, color: 'from-purple-500 to-pink-500' }
-  ];
 
   return (
     <section id="about" ref={sectionRef} className="py-20 bg-slate-900 text-white relative overflow-hidden">
