@@ -29,24 +29,6 @@ const Footer = () => {
     return () => ctx.revert();
   }, []);
 
-  const footerLinks = [
-    {
-      title: 'Product',
-      links: ['Cloud Computing', 'Databases', 'Storage', 'Networking', 'Security', 'Monitoring']
-    },
-    {
-      title: 'Company',
-      links: ['About Us', 'Careers', 'Blog', 'Press', 'Partners', 'Contact']
-    },
-    {
-      title: 'Resources',
-      links: ['Documentation', 'API Reference', 'Tutorials', 'Status Page', 'Support', 'Community']
-    },
-    {
-      title: 'Legal',
-      links: ['Privacy Policy', 'Terms of Service', 'Cookie Policy', 'GDPR', 'Compliance', 'Security']
-    }
-  ];
 
   const socialLinks = [
     { icon: Twitter, href: '#', label: 'Twitter' },
@@ -93,24 +75,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Footer Links */}
-          {footerLinks.map((section, index) => (
-            <div key={index}>
-              <h3 className="text-lg font-semibold mb-4 text-white">{section.title}</h3>
-              <ul className="space-y-3">
-                {section.links.map((link, linkIndex) => (
-                  <li key={linkIndex}>
-                    <a
-                      href="#"
-                      className="text-slate-300 hover:text-cyan-300 transition-colors duration-300 text-sm"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
         </div>
 
         {/* Newsletter Signup */}
