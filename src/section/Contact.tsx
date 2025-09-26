@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { Mail, Phone, Send, MessageCircle, Zap, Shield, Clock } from 'lucide-react';
 
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://127.0.0.1:8000';
+
+
+
 const Contact = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
@@ -9,10 +13,13 @@ const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    company: '',
+    phone: '',
     project: '',
     message: ''
   });
+
+  const [submitting, setSubmitting] = useState(false);
+  const [status, setStatus] = useState<null | { ok: boolean; msg: string }>(null);
 
   useEffect(() => {
     // Animate title
@@ -44,10 +51,33 @@ const Contact = () => {
     });
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
+    setStatus(null);
+
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      setStatus({ ok: false, msg: 'Please fill required fields.' });
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      const resp = await fetch(`${API_BASE}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok) throw new Error((data as any)?.detail || (data as any)?.error || 'Submit failed');
+
+      setStatus({ ok: true, msg: 'Thanks! We received your message.' });
+      setFormData({ name: '', email: '', phone: '', project: '', message: '' });
+    } catch (err: any) {
+      setStatus({ ok: false, msg: err?.message || 'Something went wrong.' });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -66,15 +96,6 @@ const Contact = () => {
       gradient: 'from-cyan-400 to-blue-500',
       glowFrom: 'from-blue-500/5',
       delay: '0s'
-    },
-    {
-      icon: MessageCircle,
-      title: 'Live Chat',
-      details: 'Available 24/7',
-      description: 'Instant support via chat',
-      gradient: 'from-blue-500 to-indigo-500',
-      glowFrom: 'from-indigo-500/5',
-      delay: '0.2s'
     },
     {
       icon: Phone,
@@ -153,6 +174,12 @@ const Contact = () => {
                 <h3 className="text-2xl md:text-3xl font-bold mb-2 text-white">Start Your Journey</h3>
                 <p className="text-gray-400 mb-8">Tell us about your project and we'll get back to you within 24 hours</p>
                 
+                {status && (
+                  <div className={`mb-4 rounded-xl px-4 py-3 border ${status.ok ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300' : 'border-rose-500/30 bg-rose-500/10 text-rose-300'}`}>
+                    {status.msg}
+                  </div>
+                )}
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -188,15 +215,15 @@ const Contact = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
-                        Company
+                        Phone
                       </label>
                       <input
                         type="text"
-                        name="company"
-                        value={formData.company}
+                        name="phone"
+                        value={formData.phone}
                         onChange={handleChange}
                         className="w-full px-4 py-3 rounded-xl bg-slate-800/50 border border-white/10 focus:border-cyan-400/50 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300 outline-none text-white placeholder-gray-400"
-                        placeholder="Your Company"
+                        placeholder="Your Phone"
                       />
                     </div>
                     <div>
@@ -235,10 +262,11 @@ const Contact = () => {
                   
                   <button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 text-white py-4 rounded-xl font-semibold text-lg hover:shadow-2xl hover:shadow-cyan-500/25 hover:scale-105 transition-all duration-500 flex items-center justify-center space-x-2 group"
+                    disabled={submitting}
+                    className={`w-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 text-white py-4 rounded-xl font-semibold text-lg transition-all duration-500 flex items-center justify-center space-x-2 group ${submitting ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-2xl hover:shadow-cyan-500/25 hover:scale-105'}`}
                   >
                     <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                    <span>Send Message</span>
+                    <span>{submitting ? 'Sending…' : 'Send Message'}</span>
                   </button>
                 </form>
               </div>
